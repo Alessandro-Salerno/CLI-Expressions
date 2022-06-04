@@ -165,11 +165,16 @@ void printexp(char *expression) {
 
 int main() {
     srand(time(NULL));
+    
+    #ifdef WIN32
+        system("");
+    #endif
 
     char *expression = genexp();
     printexp(expression);
 
     for (int i = 0; i < 6 && !attempt(expression); i++);
     
-    return 0;
+    getchar();
+    getchar();
 }
