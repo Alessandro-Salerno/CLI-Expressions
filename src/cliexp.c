@@ -107,7 +107,7 @@ char *genexp() {
             val1 = rand() % (max1 - 1) + 1;
             val2 = rand() % (max2 - 1) + 1;
         } while (operand == '/' && val1 % val2 != 0);
-    } while (val1 < val2 || val1 * val2 > 1000);
+    } while (evaluate(val1, val2, operand) >= 1000 || evaluate(val1, val2, operand) <= 0);
 
     char *expression = calloc(16, 1);
     sprintf(expression, "%d%c%d=%d", val1, operand, val2, evaluate(val1, val2, operand));
