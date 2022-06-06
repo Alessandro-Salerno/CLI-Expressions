@@ -189,10 +189,10 @@ int main() {
         char *expression = genexp();
         printexp(expression);
 
-        bool won = false;
-        for (int i = 0; i < 6 && (won = !attempt(expression)); i++);
+        bool lost = false;
+        for (int i = 0; i < 6 && (lost = !attempt(expression)); i++);
         
-        if (won) {
+        if (lost) {
             printf("You lost!\n");
             printf("The right expression was: %s\n", expression);
         }
