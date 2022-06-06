@@ -26,6 +26,7 @@ For more information, please refer to <https://unlicense.org>
 */
 
 
+// Includes
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -34,6 +35,7 @@ For more information, please refer to <https://unlicense.org>
 #include <string.h>
 
 
+// Types
 typedef enum {
     Black,
     Red,
@@ -54,6 +56,7 @@ typedef enum {
 } color_t;
 
 
+// Support functions
 void textcolor(color_t color) {
     printf(
         "\033[38;5;%dm",
@@ -62,6 +65,7 @@ void textcolor(color_t color) {
 }
 
 
+// Game functions
 int find(char *array, char val) {
     int i = 0;
     for (char *cp = array, chr; (chr = *cp); cp++, i++) {
@@ -77,8 +81,8 @@ bool contains(char *array, char val) {
     return find(array, val) != -1;
 }
 
-int evaluate(int val1, int val2, char operand) {
-    switch (operand) {
+int evaluate(int val1, int val2, char operator) {
+    switch (operator) {
         case '+': return val1 + val2;
         case '-': return val1 - val2;
         case '*': return val1 * val2;
@@ -89,9 +93,9 @@ int evaluate(int val1, int val2, char operand) {
 }
 
 char *genexp() {
-    char operands[] = { '+', '-', '*', '/' };
-    int opindex = rand() % sizeof operands;
-    char operand = operands[opindex];
+    char operators[] = { '+', '-', '*', '/' };
+    int opindex = rand() % sizeof operators;
+    char operator = operators[opindex];
 
     int len1 = rand() % 3 + 1;
     int len2 = rand() % 3 + 1;
@@ -106,19 +110,19 @@ char *genexp() {
         do {
             val1 = rand() % (max1 - 1) + 1;
             val2 = rand() % (max2 - 1) + 1;
-        } while (operand == '/' && val1 % val2 != 0);
-    } while (evaluate(val1, val2, operand) >= 1000 || evaluate(val1, val2, operand) <= 0);
+        } while (operator == '/' && val1 % val2 != 0);
+    } while (evaluate(val1, val2, operator) >= 1000 || evaluate(val1, val2, operator) <= 0);
 
     char *expression = calloc(16, 1);
-    sprintf(expression, "%d%c%d=%d", val1, operand, val2, evaluate(val1, val2, operand));
+    sprintf(expression, "%d%c%d=%d", val1, operator, val2, evaluate(val1, val2, operator));
 
     return expression;
 }
 
 bool attempt(char *expression) {
     int val1, val2, r;
-    char operand;
-    sscanf(expression, "%d%c%d=%d", &val1, &operand, &val2, &r);    // I know this is bad but I don't care
+    char operator;
+    sscanf(expression, "%d%c%d=%d", &val1, &operator, &val2, &r);    // I know this is bad but I don't care
     
     int u1, u2, ur;
     char uop, uexp[16];
