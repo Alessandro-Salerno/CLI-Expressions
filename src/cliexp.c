@@ -34,6 +34,15 @@ For more information, please refer to <https://unlicense.org>
 #include <math.h>
 #include <string.h>
 
+// Platform-Specific stuff
+#ifdef WIN32
+    #define CLEAR_COMMAND "cls"
+#else
+    #define CLEAR_COMMAND "clear"
+#endif
+
+#define CLEAR() system(CLEAR_COMMAND)
+
 
 // Types
 typedef enum {
@@ -138,7 +147,7 @@ bool attempt(char *expression) {
     } while ((wrong = (evaluate(u1, u2, uop) != ur)));
 
     if (strcmp(expression, uexp) == 0) {
-        printf("\n\nCONGRATULATIONS! YOU WON!\n");
+        printf("\n\nCongratulations, you won!\n");
         return true;
     }
 
@@ -174,11 +183,21 @@ int main() {
         system("");
     #endif
 
-    char *expression = genexp();
-    printexp(expression);
+    while (true) {
+        CLEAR();
 
-    for (int i = 0; i < 6 && !attempt(expression); i++);
-    
-    getchar();
-    getchar();
+        char *expression = genexp();
+        printexp(expression);
+
+        bool won = false;
+        for (int i = 0; i < 6 && (won = !attempt(expression)); i++);
+        
+        if (won) {
+            printf("You lost!\n");
+            printf("The right expression was: %s\n", expression);
+        }
+
+        getchar();
+        getchar();
+    }
 }
