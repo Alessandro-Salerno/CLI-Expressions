@@ -197,6 +197,7 @@ int main() {
             printf("The right expression was: %s\n", expression);
         }
 
+        free(expression);
         getchar();
         getchar();
     }
